@@ -25,8 +25,24 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
-
+## returns the inverse of a cachematrix created using makeCacheMatrix
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  # check if x has an inverse cached
+  inv <- x$getinv()
+  # if there is an inverse cached, return it :)
+  if (!is.null(inv)) {
+    message("retrieving cached inverse")
+    return(inv) 
+  }
+  # there is not inverse cached
+    # check that the matrix is square
+    m <- x$get()
+    if(nrow(m)!=ncol(m)) stop("matrix is not square, cannot compute inverse")
+    # if we get this far, then we have a square matrix, so it's worth trying to calculate the inverse
+    inv <- solve(m)
+    # now cache it
+    x$setinv(inv)
+    # return the inverse of the matrix
+    inv
+  
 }
